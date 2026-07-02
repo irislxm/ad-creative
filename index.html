@@ -333,14 +333,14 @@
 </main>
 
 <footer>
-  更新于 2026-07-02 · 抽帧分析工作流 ad-creative-analysis · v3.2（新增6月26条+双月切换）
+  更新于 2026-07-02 · 抽帧分析工作流 ad-creative-analysis · v3.3（隐藏下载/原视频链接·仅供参考）
 </footer>
 
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="left">
       <button class="close-btn" id="close-btn">×</button>
-      <video id="m-video" controls preload="metadata" playsinline poster=""></video>
+      <video id="m-video" controls controlsList="nodownload noplaybackrate noremoteplayback" disablePictureInPicture preload="metadata" playsinline poster="" oncontextmenu="return false;"></video>
     </div>
     <div class="right" id="m-right"></div>
   </div>
@@ -456,7 +456,7 @@ function openModal(item) {
     <div class="sub-meta">
       <span class="sid">${item.sid}</span>
       <span>类目: <b>${currentTab}</b></span>
-      <a href="${item.url}" target="_blank" rel="noopener">原始视频链接 ↗</a>
+      <span style="color:#94a3b8;">仅供参考 · 请勿搬运</span>
     </div>
     <div class="field-block">
       <h3>素材类型</h3>
