@@ -304,7 +304,7 @@
       <span class="stat">📦 <b id="stat-total">46</b> 条素材</span>
       <span class="stat">🗓️ <b>2</b> 个月对比</span>
       <span class="stat">🎯 <b id="stat-hooks">30+</b> 种钩子手法</span>
-      <span class="stat">🔥 <b id="stat-hot">3</b> 条精品级</span>
+      <span class="stat">🔥 <b id="stat-hot">15</b> 条精品级</span>
     </div>
   </div>
 </header>
@@ -333,7 +333,7 @@
 </main>
 
 <footer>
-  更新于 2026-07-02 · 电商导购素材分析 · v3.4
+  更新于 2026-07-02 · 电商导购素材分析 · v3.5
 </footer>
 
 <div class="modal-overlay" id="modal">
@@ -376,16 +376,16 @@ function shortAudience(audStr) {
   return first.length > 60 ? first.slice(0, 60) + '…' : first;
 }
 
-// 判断 hot/gold 标签
+// 判断 hot/gold 标签（5+6月统一关键词库）
+// 🔥 精品：文案里出现"心理学天花板/杀器/顶配/最正确的决定"这类顶级评价词 → 洞察维度评级
+// ⚡ 强势：文案里出现"击穿价格/绝对价格/LOGO 轰炸/政策矩阵"这类冲击力评价词 → 转化维度评级
 function getBadges(item) {
-  const text = (item.type + item.hook3s + item.selling).toLowerCase();
+  const text = (item.type + item.hook3s + item.selling + (item.script||'') + (item.audience||'')).toLowerCase();
+  const HOT_KWS = ['精品','最具洞察','天花板','心理杀器','最难抄袭','稀缺坦诚','最正确的决定','顶配','最高级'];
+  const GOLD_KWS = ['强冲击','强引流','政策矩阵','临界价格','击穿','绝对价格','logo 密度','轰炸'];
   const badges = [];
-  if (text.includes('精品') || text.includes('反认知钩中的精品') || text.includes('最具洞察')) {
-    badges.push({ cls: 'hot', text: '🔥 精品' });
-  }
-  if (text.includes('强冲击') || text.includes('强引流') || text.includes('政策矩阵')) {
-    badges.push({ cls: 'gold', text: '⚡ 强势' });
-  }
+  if (HOT_KWS.some(k => text.includes(k.toLowerCase()))) badges.push({ cls: 'hot', text: '🔥 精品' });
+  if (GOLD_KWS.some(k => text.includes(k.toLowerCase()))) badges.push({ cls: 'gold', text: '⚡ 强势' });
   return badges;
 }
 
@@ -527,10 +527,12 @@ fetch('data.json')
     // 统计
     const allHooks = new Set();
     let hot = 0;
+    const HOT_KWS_STAT = ['精品','最具洞察','天花板','心理杀器','最难抄袭','稀缺坦诚','最正确的决定','顶配','最高级'];
     Object.values(d).flat().forEach(it => {
       const h = extractHookName(it.type);
       allHooks.add(h);
-      if ((it.type + it.hook3s).includes('精品')) hot++;
+      const text = (it.type + it.hook3s + it.selling + (it.script||'') + (it.audience||'')).toLowerCase();
+      if (HOT_KWS_STAT.some(k => text.includes(k.toLowerCase()))) hot++;
     });
     document.getElementById('stat-hooks').textContent = allHooks.size + '+';
     document.getElementById('stat-hot').textContent = hot;
